@@ -1,0 +1,25 @@
+[project]
+name = "react-agent"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "aiogram>=3.30.0",
+    "aiohttp-socks>=0.11.0",
+    "arize-phoenix>=19.10.0",
+    "bs4>=0.0.2",
+    "ddgs>=9.14.4",
+    "dotenv>=0.9.9",
+    "langchain>=1.3.14",
+    "langchain-azure-ai>=1.2.3",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.5.2",
+    "langchain-openai>=1.4.1",
+    "langfuse>=4.14.2",
+    "langgraph>=1.2.10",
+    "openinference-instrumentation-langchain>=0.1.68",
+    "opentelemetry-exporter-otlp>=1.44.0",
+    "opentelemetry-sdk>=1.44.0",
+    "pyrefly>=0.60.0",
+    "python-dotenv>=1.2.2",
+    "ratelimit>=2.2.1",
+]
