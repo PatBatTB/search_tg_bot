@@ -1,15 +1,12 @@
 import os
 import openai
 import langgraph
+import agent_tools
 
 from langchain_core.messages import HumanMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_agent
-from langchain_community.tools import DuckDuckGoSearchResults
-from langchain_community.document_loaders import WebBaseLoader
-from langchain.tools import tool
-from datetime import datetime, timezone, timedelta
 from langchain_core.rate_limiters import InMemoryRateLimiter
 
 from pydantic import SecretStr
@@ -64,7 +61,11 @@ class ReactAgent:
         # )
         self._agent = create_agent(
             model=_chat_model,
-            tools=[_ddg_tool, current_datetime, read_page],
+            tools=[
+                agent_tools.ddg_tool,
+                agent_tools.current_datetime,
+                agent_tools.read_page
+            ],
             system_prompt=_system_prompt,
         )
 
@@ -90,31 +91,3 @@ class ReactAgent:
             response_text = e.message
         return response_text
 
-
-_ddg_tool = DuckDuckGoSearchResults(
-    name="DDG_web_search",
-    description="Инструмент для поиска информации в интернете",
-    num_results=10,
-    output_format="json"
-)
-
-
-@tool
-def current_datetime():
-    """Получает текущую дату и время"""
-    return datetime.now(
-        tz=timezone(
-            offset=timedelta(hours=3)
-        )
-    )
-
-@tool
-def read_page(url: str) -> str:
-    """Извлекает читаемый текст одной веб-страницы по ее URL.
-    Используйте это, когда фрагмента результата поиска недостаточно."""
-    try:
-        loader = WebBaseLoader(url)
-        docs = loader.load()
-        return docs[0].page_content[:3000]
-    except Exception as e:
-        return f"Не удалось загрузить страницу: {e}"

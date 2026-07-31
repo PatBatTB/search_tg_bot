@@ -30,8 +30,11 @@ def bot_chat(agent: ReactAgent):
 def console_chat(agent: ReactAgent):
     print("Привет! Чем могу помочь?")
     while (request := input("> ")) and request.lower() not in ("выход", "exit", "quit"):
-        response = agent.invoke(request)
-        print(f"AI: {response}")
+        try:
+            response = agent.invoke(request)
+            print(f"AI: {response}")
+        except Exception as e:
+            print(f"ERROR: {e}")
     print("До встречи.")
 
 if __name__ == '__main__':
